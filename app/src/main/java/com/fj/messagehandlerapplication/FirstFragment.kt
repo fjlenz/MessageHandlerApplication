@@ -1,11 +1,13 @@
 package com.fj.messagehandlerapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fj.messagehandlerapplication.databinding.FragmentFirstBinding
@@ -41,7 +43,6 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         retrieveMessages()
-
 
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
@@ -82,16 +83,27 @@ class FirstFragment : Fragment() {
         })
     }
 
+
     private fun populateListView() {
         val context = context as MainActivity
 
         var resultAdapter = ArrayAdapter<MessageModel>(
             context,
             android.R.layout.simple_list_item_1,
-            //doubtThisllMatter
             messageList
         )
-        resultAdapter.notifyDataSetChanged()
+
+
+        binding.listMessageView.setOnItemClickListener{parent, view, position, id ->
+            Log.v("position", position.toString())
+            Log.v("Someone clicked: ", messageList[position].toString())
+
+            val bundle = bundleOf("messageId" to messageList[position].id.toString())
+
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
+
+        }
+
         binding.listMessageView.setAdapter(resultAdapter)
 
     }
