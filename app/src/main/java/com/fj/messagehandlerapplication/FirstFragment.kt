@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fj.messagehandlerapplication.databinding.FragmentFirstBinding
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,7 +22,7 @@ import retrofit2.Response
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment()  {
 
     var messageList = ArrayList<MessageModel>()
 
@@ -33,8 +36,8 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+
         return binding.root
 
     }
@@ -43,6 +46,10 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         retrieveMessages()
+
+        binding.buttonRefresh.setOnClickListener {
+            retrieveMessages()
+        }
 
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
@@ -54,7 +61,8 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    fun retrieveMessages() {
+    private fun retrieveMessages() {
+        binding.progressMessageLoader.visibility = VISIBLE;
 
         Log.v("Starting /messages call","")
         // Retrofit for API Call
@@ -75,6 +83,7 @@ class FirstFragment : Fragment() {
                     }
 
                     populateListView()
+                    binding.progressMessageLoader.visibility = INVISIBLE;
                 }
             }
             override fun onFailure(call: Call<ArrayList<MessageModel>>, t: Throwable) {

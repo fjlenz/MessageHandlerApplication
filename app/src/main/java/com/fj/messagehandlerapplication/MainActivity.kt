@@ -10,7 +10,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.FragmentManager
 import com.fj.messagehandlerapplication.databinding.ActivityMainBinding
+import com.fj.messagehandlerapplication.databinding.FragmentFirstBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,10 +39,14 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        /*
         binding.fab.setOnClickListener { view ->
+
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+         */
 
     }
 
