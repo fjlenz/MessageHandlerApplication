@@ -1,6 +1,5 @@
 package com.fj.messagehandlerapplication
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fj.messagehandlerapplication.databinding.FragmentFirstBinding
-import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,6 +49,7 @@ class FirstFragment : Fragment()  {
             retrieveMessages()
         }
 
+        binding.buttonFirst.isEnabled = false
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
@@ -62,7 +61,7 @@ class FirstFragment : Fragment()  {
     }
 
     private fun retrieveMessages() {
-        binding.progressMessageLoader.visibility = VISIBLE;
+        binding.progressMessageLoader.visibility = VISIBLE
 
         Log.v("Starting /messages call","")
         // Retrofit for API Call
@@ -83,7 +82,7 @@ class FirstFragment : Fragment()  {
                     }
 
                     populateListView()
-                    binding.progressMessageLoader.visibility = INVISIBLE;
+                    binding.progressMessageLoader.visibility = INVISIBLE
                 }
             }
             override fun onFailure(call: Call<ArrayList<MessageModel>>, t: Throwable) {
@@ -96,24 +95,24 @@ class FirstFragment : Fragment()  {
     private fun populateListView() {
         val context = context as MainActivity
 
-        var resultAdapter = ArrayAdapter<MessageModel>(
+        val resultAdapter = ArrayAdapter(
             context,
             android.R.layout.simple_list_item_1,
             messageList
         )
 
 
-        binding.listMessageView.setOnItemClickListener{parent, view, position, id ->
+        binding.listMessageView.setOnItemClickListener{_, _, position, _ ->
             Log.v("position", position.toString())
             Log.v("Someone clicked: ", messageList[position].toString())
 
-            val bundle = bundleOf("messageId" to messageList[position].id.toString())
+            val bundle = bundleOf("messageId" to messageList[position].id)
 
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
 
         }
 
-        binding.listMessageView.setAdapter(resultAdapter)
+        binding.listMessageView.adapter = resultAdapter
 
     }
 }
