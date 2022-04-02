@@ -5,8 +5,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.fj.messagehandlerapplication.databinding.FragmentSecondBinding
@@ -44,9 +43,9 @@ class SecondFragment : Fragment() {
     }
 
     private fun retrieveMessage(messageId:String) {
-        binding.textMessageIdView.visibility = GONE
-        binding.textMessageTextView.visibility  = GONE
-        binding.textMessageRatingView.visibility = GONE
+        binding.textMessageIdView.visibility = INVISIBLE
+        binding.textMessageTextView.visibility  = INVISIBLE
+        binding.textMessageRatingView.visibility = INVISIBLE
 
         binding.progressMessageLoader.visibility = VISIBLE
 
