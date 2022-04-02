@@ -50,7 +50,7 @@ class SecondFragment : Fragment() {
 
         binding.progressMessageLoader.visibility = VISIBLE
 
-        Log.v("Starting /messages call","")
+        Log.v("Starting /message GET","")
         // Retrofit for API Call
         val service = MessageAPIClient.getClient().create(MessageService::class.java)
 
@@ -89,9 +89,46 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonUpdate.setOnClickListener {
+            updateMessage()
+        }
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
+    }
+
+    private fun updateMessage() {
+        binding.progressMessageLoader.visibility = VISIBLE
+
+        Log.v("Starting /message PUT","")
+        // Retrofit for API Call
+        val service = MessageAPIClient.getClient().create(MessageService::class.java)
+        var messageForUpdate = MessageModel()
+
+        messageForUpdate.id = binding.textMessageIdView.text.toString()
+        messageForUpdate.messageText = binding.textMessageTextView.text.toString()
+        messageForUpdate.rating = Integer.parseInt(binding.textMessageRatingView.text.toString())
+
+        Log.v("Model4Update: ",messageForUpdate.toString())
+
+        val call = service.updateMessage(singleMessageRetrieved.id, messageForUpdate)
+
+        call.enqueue(object : Callback<MessageModel> {
+            override fun onResponse(call: Call<MessageModel>, response: Response<MessageModel>) {
+                Log.v("On Response",response.toString())
+                if (response.code() == 200) {
+                    singleMessageRetrieved = response.body()!!
+                    Log.v("SingleMessage: ", singleMessageRetrieved.toString())
+
+                    populateSingleMessage()
+                    binding.progressMessageLoader.visibility = View.INVISIBLE
+                }
+            }
+            override fun onFailure(call: Call<MessageModel>, t: Throwable) {
+                Log.v("Error in Retrofit",t.toString())
+            }
+        })
+
     }
 
     override fun onDestroyView() {

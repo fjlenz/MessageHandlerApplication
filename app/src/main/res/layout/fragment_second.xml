@@ -50,19 +50,31 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressMessageLoader"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:layout_constraintBottom_toTopOf="@id/button_second" />
+        app:layout_constraintTop_toBottomOf="@id/textMessageRatingView"
+        app:layout_constraintEnd_toEndOf="@+id/textMessageIdView"
+        app:layout_constraintStart_toStartOf="@+id/textMessageIdView"
+        />
 
     <Button
         android:id="@+id/button_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/previous"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_Update"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textMessageRatingView" />
+        app:layout_constraintTop_toBottomOf="@id/progressMessageLoader" />
+
+    <Button
+        android:id="@+id/button_Update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_second"
+        app:layout_constraintTop_toBottomOf="@id/progressMessageLoader"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
